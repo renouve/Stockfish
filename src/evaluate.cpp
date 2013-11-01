@@ -536,7 +536,7 @@ Value do_evaluate(const Position& pos, Value& margin) {
 
         // Bonus for knight when several backward pawn
         if (Piece == KNIGHT)
-            score += make_score(4, 4) * (ei.pi->backwardPawnCount[Us]);
+            score += make_score(4, 4) * (ei.pi->backwardPawnCount[Us] - 4);
 
         if (Piece == BISHOP || Piece == KNIGHT)
         {
