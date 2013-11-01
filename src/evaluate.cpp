@@ -534,10 +534,6 @@ Value do_evaluate(const Position& pos, Value& margin) {
         if (Piece == KNIGHT)
             score -= KnightPawns * std::max(5 - pos.count<PAWN>(Them), 0);
 
-        // Bonus for knight when several backward pawn
-        if (Piece == KNIGHT)
-            score += make_score(4, 4) * (ei.pi->backwardPawnCount[Us] - 4);
-
         if (Piece == BISHOP || Piece == KNIGHT)
         {
             // Bishop and knight outposts squares

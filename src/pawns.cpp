@@ -111,8 +111,6 @@ namespace {
     e->pawnsOnSquares[Us][BLACK] = popcount<Max15>(ourPawns & DarkSquares);
     e->pawnsOnSquares[Us][WHITE] = pos.count<PAWN>(Us) - e->pawnsOnSquares[Us][BLACK];
 
-    int backwardPawnCount = 0;
-
     // Loop through all pawns of the current color and score each pawn
     while ((s = *pl++) != SQ_NONE)
     {
@@ -180,10 +178,7 @@ namespace {
             value -= Doubled[opposed][f];
 
         if (backward)
-        {
             value -= Backward[opposed][f];
-            ++backwardPawnCount;
-        }
 
         if (chain)
             value += ChainMember[f][relative_rank(Us, s)];
@@ -196,8 +191,6 @@ namespace {
                 e->candidatePawns[Us] |= s;
         }
     }
-
-    e->backwardPawnCount[Us] = backwardPawnCount;
 
     return value;
   }
