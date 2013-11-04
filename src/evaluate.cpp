@@ -348,6 +348,13 @@ Value do_evaluate(const Position& pos, Value& margin) {
           - evaluate_pieces_of_color<BLACK, Trace>(pos, ei, mobility);
 
   score += apply_weight(mobility[WHITE] - mobility[BLACK], Weights[Mobility]);
+  
+  // Bonus for knight in closed positions
+  if (mobility[WHITE] < 0 && mobility[BLACK] < 0)
+  {
+      int f = -(mobility[WHITE] + mobility[BLACK]) / 10;
+      score += (pos.count<KNIGHT>(WHITE) - pos.count<KNIGHT>(BLACK)) * make_score(24, 8) * f;
+  }
 
   // Evaluate kings after all other pieces because we need complete attack
   // information when computing the king safety evaluation.
