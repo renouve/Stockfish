@@ -173,7 +173,6 @@ namespace {
   const Score RookSemiopenFile = make_score(19, 10);
   const Score BishopPawns      = make_score( 8, 12);
   const Score KnightPawns      = make_score( 8,  4);
-  const Score MinorBehindPawn  = make_score(16,  0);
   const Score UndefendedMinor  = make_score(25, 10);
   const Score TrappedRook      = make_score(90,  0);
   const Score Unstoppable      = make_score( 0, 20);
@@ -539,11 +538,6 @@ Value do_evaluate(const Position& pos, Value& margin) {
             // Bishop and knight outposts squares
             if (!(pos.pieces(Them, PAWN) & pawn_attack_span(Us, s)))
                 score += evaluate_outposts<Piece, Us>(pos, ei, s);
-
-            // Bishop or knight behind a pawn
-            if (    relative_rank(Us, s) < RANK_5
-                && (pos.pieces(PAWN) & (s + pawn_push(Us))))
-                score += MinorBehindPawn;
         }
 
         if (  (Piece == ROOK || Piece == QUEEN)
