@@ -29,7 +29,7 @@ namespace {
   /// Constants
 
   const int MoveHorizon  = 50;    // Plan time management at most this many moves ahead
-  const double MaxRatio   = 21.0;  // When in trouble, we can step over reserved time with this ratio
+  const double MaxRatio   = 64.0;  // When in trouble, we can step over reserved time with this ratio
   const double StealRatio = 1.0; // However we must not steal time from remaining moves over this ratio
 
 
