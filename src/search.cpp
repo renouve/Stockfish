@@ -736,7 +736,7 @@ namespace {
             {
                 ss->currentMove = move;
                 pos.do_move(move, st, ci, pos.gives_check(move, ci));
-                value = -search<NonPV>(pos, ss+1, -rbeta, -rbeta+1, rdepth, !cutNode);
+                value = -search<NonPV>(pos, ss+1, -rbeta, -rbeta+1, rdepth, true);
                 pos.undo_move(move);
                 if (value >= rbeta)
                     return value;
