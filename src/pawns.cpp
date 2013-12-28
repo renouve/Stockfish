@@ -32,33 +32,33 @@ namespace {
 
   // Doubled pawn penalty by file
   const Score Doubled[FILE_NB] = {
-    S(13, 43), S(20, 48), S(23, 48), S(23, 48),
-    S(23, 48), S(23, 48), S(20, 48), S(13, 43) };
+    S(12, 34), S(18, 38), S(21, 38), S(21, 38),
+    S(21, 38), S(21, 38), S(18, 38), S(12, 34) };
 
   // Isolated pawn penalty by opposed flag and file
   const Score Isolated[2][FILE_NB] = {
-  { S(37, 45), S(54, 52), S(60, 52), S(60, 52),
-    S(60, 52), S(60, 52), S(54, 52), S(37, 45) },
-  { S(25, 30), S(36, 35), S(40, 35), S(40, 35),
-    S(40, 35), S(40, 35), S(36, 35), S(25, 30) } };
+  { S(34, 35), S(49, 41), S(55, 41), S(55, 41),
+    S(55, 41), S(55, 41), S(49, 41), S(34, 35) },
+  { S(23, 24), S(33, 27), S(36, 27), S(36, 27),
+    S(36, 27), S(36, 27), S(33, 27), S(23, 24) } };
 
   // Backward pawn penalty by opposed flag and file
   const Score Backward[2][FILE_NB] = {
-  { S(30, 42), S(43, 46), S(49, 46), S(49, 46),
-    S(49, 46), S(49, 46), S(43, 46), S(30, 42) },
-  { S(20, 28), S(29, 31), S(33, 31), S(33, 31),
-    S(33, 31), S(33, 31), S(29, 31), S(20, 28) } };
+  { S(27, 33), S(39, 36), S(45, 36), S(45, 36),
+    S(45, 36), S(45, 36), S(39, 36), S(27, 33) },
+  { S(18, 22), S(26, 24), S(30, 24), S(30, 24),
+    S(30, 24), S(30, 24), S(26, 24), S(18, 22) } };
 
   // Pawn chain membership bonus by file and rank (initialized by formula)
   Score ChainMember[FILE_NB][RANK_NB];
 
   // Candidate passed pawn bonus by rank
   const Score CandidatePassed[RANK_NB] = {
-    S( 0, 0), S( 6, 13), S(6,13), S(14,29),
-    S(34,68), S(83,166), S(0, 0), S( 0, 0) };
+    S( 0, 0), S( 5, 10), S(5,10), S(13,23),
+    S(31,53), S(76,130), S(0, 0), S( 0, 0) };
 
   // Bonus for file distance of the two outermost pawns
-  const Score PawnsFileSpan = S(0, 15);
+  const Score PawnsFileSpan = S(0, 12);
 
   // Weakness of our pawn shelter in front of the king indexed by [rank]
   const Value ShelterWeakness[RANK_NB] =
@@ -210,7 +210,7 @@ void init() {
       for (File f = FILE_A; f <= FILE_H; ++f)
       {
           bonus = r * (r-1) * (r-2) + chainByFile[f] * (r/2 + 1);
-          ChainMember[f][r] = make_score(bonus, bonus);
+          ChainMember[f][r] = make_score(bonus * 91 / 100, bonus * 79 / 100);
       }
 }
 

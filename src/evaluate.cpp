@@ -104,27 +104,45 @@ namespace {
   //
   // Values modified by Joona Kiiski
   const Score WeightsInternal[] = {
-      S(289, 344), S(233, 201), S(221, 273), S(46, 0), S(271, 0), S(307, 0)
+      S(256, 256), S(256, 256), S(256, 256), S(256, 256), S(256, 256), S(256, 256)
   };
 
   // MobilityBonus[PieceType][attacked] contains bonuses for middle and end
   // game, indexed by piece type and number of attacked squares not occupied by
   // friendly pieces.
-  const Score MobilityBonus[][32] = {
+  //const Score MobilityBonus[][32] = {
+  //   {}, {},
+  //   { S(-35,-30), S(-22,-20), S(-9,-10), S( 3,  0), S(15, 10), S(27, 20), // Knights
+  //     S( 37, 28), S( 42, 31), S(44, 33) },
+  //   { S(-22,-27), S( -8,-13), S( 6,  1), S(20, 15), S(34, 29), S(48, 43), // Bishops
+  //     S( 60, 55), S( 68, 63), S(74, 68), S(77, 72), S(80, 75), S(82, 77),
+  //     S( 84, 79), S( 86, 81) },
+  //   { S(-17,-33), S(-11,-16), S(-5,  0), S( 1, 16), S( 7, 32), S(13, 48), // Rooks
+  //     S( 18, 64), S( 22, 80), S(26, 96), S(29,109), S(31,115), S(33,119),
+  //     S( 35,122), S( 36,123), S(37,124) },
+  //   { S(-12,-20), S( -8,-13), S(-5, -7), S(-2, -1), S( 1,  5), S( 4, 11), // Queens
+  //     S(  7, 17), S( 10, 23), S(13, 29), S(16, 34), S(18, 38), S(20, 40),
+  //     S( 22, 41), S( 23, 41), S(24, 41), S(25, 41), S(25, 41), S(25, 41),
+  //     S( 25, 41), S( 25, 41), S(25, 41), S(25, 41), S(25, 41), S(25, 41),
+  //     S( 25, 41), S( 25, 41), S(25, 41), S(25, 41) }
+  //};
+
+  // Ponderate (1.1289, 1.3438)
+    const Score MobilityBonus[][32] = {
      {}, {},
-     { S(-35,-30), S(-22,-20), S(-9,-10), S( 3,  0), S(15, 10), S(27, 20), // Knights
-       S( 37, 28), S( 42, 31), S(44, 33) },
-     { S(-22,-27), S( -8,-13), S( 6,  1), S(20, 15), S(34, 29), S(48, 43), // Bishops
-       S( 60, 55), S( 68, 63), S(74, 68), S(77, 72), S(80, 75), S(82, 77),
-       S( 84, 79), S( 86, 81) },
-     { S(-17,-33), S(-11,-16), S(-5,  0), S( 1, 16), S( 7, 32), S(13, 48), // Rooks
-       S( 18, 64), S( 22, 80), S(26, 96), S(29,109), S(31,115), S(33,119),
-       S( 35,122), S( 36,123), S(37,124) },
-     { S(-12,-20), S( -8,-13), S(-5, -7), S(-2, -1), S( 1,  5), S( 4, 11), // Queens
-       S(  7, 17), S( 10, 23), S(13, 29), S(16, 34), S(18, 38), S(20, 40),
-       S( 22, 41), S( 23, 41), S(24, 41), S(25, 41), S(25, 41), S(25, 41),
-       S( 25, 41), S( 25, 41), S(25, 41), S(25, 41), S(25, 41), S(25, 41),
-       S( 25, 41), S( 25, 41), S(25, 41), S(25, 41) }
+     { S(-40,-40), S(-25,-27), S(-10,-13), S( 3, 0), S(17, 13), S(30, 27), // Knights
+       S( 42, 38), S( 47, 42), S(50, 44) },
+     { S(-25,-36), S( -9,-17), S( 7,  1), S(23, 20), S(38, 39), S(54, 58), // Bishops
+       S( 68, 74), S( 77, 85), S(84, 91), S(87, 97), S(90,101), S(93,103),
+       S( 95,106), S( 97,109) },
+     { S(-19,-44), S(-12,-22), S(-6,  0), S( 1, 22), S( 8, 43), S(15, 65), // Rooks
+       S( 20, 86), S( 25,108), S(29,129), S(33,146), S(35,155), S(37,160),
+       S( 40,164), S( 41,165), S(42,167) },
+     { S(-14,-27), S( -9,-17), S(-6, -9), S(-2, -1), S( 1,  7), S( 5, 15), // Queens
+       S(  8, 23), S( 11, 31), S(15, 39), S(18, 46), S(20, 51), S(23, 54),
+       S( 25, 55), S( 26, 55), S(27, 55), S(28, 55), S(28, 55), S(28, 55),
+       S( 28, 55), S( 28, 55), S(28, 55), S(28, 55), S(28, 55), S(28, 55),
+       S( 28, 55), S( 28, 55), S(28, 55), S(28, 55) }
   };
 
   // Outpost[PieceType][Square] contains bonuses for knights and bishops outposts,
@@ -294,8 +312,8 @@ namespace Eval {
     {
         t = std::min(Peak, std::min(int(0.4 * i * i), t + MaxSlope));
 
-        KingDanger[1][i] = apply_weight(make_score(t, 0), Weights[KingDangerUs]);
-        KingDanger[0][i] = apply_weight(make_score(t, 0), Weights[KingDangerThem]);
+        KingDanger[1][i] = apply_weight(make_score(t * 106 / 100, 0), Weights[KingDangerUs]);
+        KingDanger[0][i] = apply_weight(make_score(t * 120 / 100, 0), Weights[KingDangerThem]);
     }
   }
 
@@ -879,7 +897,7 @@ Value do_evaluate(const Position& pos) {
         if (pos.count<PAWN>(Us) < pos.count<PAWN>(Them))
             ebonus += ebonus / 4;
 
-        score += make_score(mbonus, ebonus);
+        score += make_score(mbonus * 86 / 100, ebonus * 107 / 100);
 
     }
 
@@ -954,6 +972,10 @@ Value do_evaluate(const Position& pos) {
 
   // apply_weight() weights score v by score w trying to prevent overflow
   Score apply_weight(Score v, Score w) {
+      
+    if (w == make_score(256, 256))
+        return v;
+
     return make_score((int(mg_value(v)) * mg_value(w)) / 0x100,
                       (int(eg_value(v)) * eg_value(w)) / 0x100);
   }
