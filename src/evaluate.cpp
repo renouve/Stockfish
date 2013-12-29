@@ -770,6 +770,13 @@ Value do_evaluate(const Position& pos) {
             score += Threat[1][type_of(pos.piece_on(lsb(b)))];
     }
 
+    if (   file_of(pos.king_square(Us)) >= FILE_E
+        && pos.piece_on(relative_square(Us, SQ_E3)) == make_piece(Us, PAWN)
+        && pos.piece_on(relative_square(Us, SQ_E4)) == make_piece(Them, PAWN))
+    {
+        score -= make_score(10, 0);
+    }
+
     if (Trace)
         Tracing::scores[Us][THREAT] = score;
 
